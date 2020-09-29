@@ -5,7 +5,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
-def parse_json(r):
+def parse_timetable(r):
     out = {
         "first_day": r["first_day_label"],
         "last_day": r["last_day_label"]
@@ -43,13 +43,28 @@ def get_url():
     url = f"https://logistica.univr.it/PortaleStudentiUnivr/grid_call.php?view=easycourse&include=corso&anno={anno}&corso={corso}&anno2[]={anno2}&visualizzazione_orario=cal&date={data}&&_lang=it&all_events=0&txtcurr={txtcurr}"
     return url
 
+def parse_lessons(r):
+    out = {}
+    legenda = r["legenda"]
+    out["lezioni"] = [l['nome'] for l in legenda]
+    return out
+
+def get_raw_json():
+    url = get_url()
+    r = requests.get(url).json()
+    return r
 
 @app.route('/')
 def main_roure():
-    url = get_url()
-    r = requests.get(url).json()
-    r = parse_json(r)
+    r = get_raw_json()
+    r = parse_timetable(r)
 
+    return r
+
+@app.route('/lessons')
+def lessons_route():
+    r = get_raw_json()
+    r = parse_lessons(r)
     return r
 
 
