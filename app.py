@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 from flask import Flask, request
@@ -14,15 +16,18 @@ def parse_timetable(r):
     lezioni = []
 
     for lezione in r["celle"]:
-        template_lezione = {
-            "nome_insegnamento": lezione["nome_insegnamento"],
-            "docente": lezione["docente"],
-            "aula": lezione["aula"],
-            "giorno": lezione["giorno"],
-            "ora_inizio": lezione["ora_inizio"],
-            "ora_fine": lezione["ora_fine"]
-        }
-        lezioni.append(template_lezione)
+        try:
+            template_lezione = {
+                "nome_insegnamento": lezione["nome_insegnamento"],
+                "docente": lezione["docente"],
+                "aula": lezione["aula"],
+                "giorno": lezione["giorno"],
+                "ora_inizio": lezione["ora_inizio"],
+                "ora_fine": lezione["ora_fine"]
+            }
+            lezioni.append(template_lezione)
+        except KeyError:
+            continue
 
     out["lezioni"] = lezioni
 
@@ -43,16 +48,20 @@ def get_url():
     url = f"https://logistica.univr.it/PortaleStudentiUnivr/grid_call.php?view=easycourse&include=corso&anno={anno}&corso={corso}&anno2[]={anno2}&visualizzazione_orario=cal&date={data}&&_lang=it&all_events=0&txtcurr={txtcurr}"
     return url
 
+
 def parse_lessons(r):
     out = {}
     legenda = r["legenda"]
     out["lezioni"] = [l['nome'] for l in legenda]
     return out
 
+
 def get_raw_json():
     url = get_url()
+    print(url)
     r = requests.get(url).json()
     return r
+
 
 @app.route('/')
 def main_roure():
@@ -61,7 +70,8 @@ def main_roure():
 
     return r
 
-@app.route('/lessons')
+
+@app.route('/subjects')
 def lessons_route():
     r = get_raw_json()
     r = parse_lessons(r)
