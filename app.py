@@ -77,6 +77,6 @@ def lessons_route():
     r = parse_lessons(r)
     return r
 
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8080)
