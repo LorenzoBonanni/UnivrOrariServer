@@ -45,7 +45,7 @@ def get_url():
     data = request.args.get("date")
     # anno di studio (Esempio: 1 - UNICO)
     txtcurr = request.args.get("txtcurr")
-    url = f"https://logistica.univr.it/PortaleStudentiUnivr/grid_call.php?view=easycourse&include=corso&anno={anno}&corso={corso}&anno2[]={anno2}&visualizzazione_orario=cal&date={data}&&_lang=it&all_events=0&txtcurr={txtcurr}"
+    url = f"https://logistica.univr.it/PortaleStudentiUnivr/grid_call_new.php?view=easycourse&form-type=corso&include=corso&txtcurr=&anno={anno}&corso={corso}&anno2%5B%5D={anno2}&visualizzazione_orario=cal&date={data}&periodo_didattico=&_lang=it&list=0&week_grid_type=-1&ar_codes_=&ar_select_=&col_cells=0&empty_box=0&only_grid=0&highlighted_date=0&all_events=0&faculty_group=0&_lang=it&all_events=0&txtcurr={txtcurr}"
     return url
 
 
@@ -58,7 +58,6 @@ def parse_lessons(r):
 
 def get_raw_json():
     url = get_url()
-    print(url)
     r = requests.get(url).json()
     return r
 
@@ -67,7 +66,6 @@ def get_raw_json():
 def main_roure():
     r = get_raw_json()
     r = parse_timetable(r)
-
     return r
 
 
@@ -77,6 +75,8 @@ def lessons_route():
     r = parse_lessons(r)
     return r
 
+
 if __name__ == "__main__":
     from waitress import serve
+
     serve(app, host="0.0.0.0", port=8080)
