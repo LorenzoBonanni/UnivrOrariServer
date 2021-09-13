@@ -47,6 +47,12 @@ def get_url():
     return url
 
 
+def get_courses_url():
+    # codice anno di studio(Esempio: 2020)
+    anno = request.args.get("anno")
+    url = f"https://logistica.univr.it/PortaleStudentiUnivr/combo.php?sw=ec_&aa={anno}&page=corsi&_=1631551434382"
+    return url
+
 def parse_lessons(r):
     out = {}
     legenda = r["legenda"]
@@ -83,6 +89,25 @@ def get_years():
     years = eval(r)
     years = [[v["label"], k] for k, v in years.items()]
     return str(years).replace("'", '"')
+
+
+@app.route('/courses')
+def get_courses():
+    url = get_courses_url()
+    result = requests.get(url).text.split("\n")[0].split(" = ")[1][:-1]
+    result = eval(result)
+    corsi = [
+        [
+            e["label"],
+            e["valore"],
+            [
+                {'label': e2["label"],
+                 'valore': e2['valore']
+                 } for e2 in e["elenco_anni"]
+            ]
+        ] for e in result
+    ]
+    return str(corsi)
 
 
 if __name__ == "__main__":
