@@ -1,5 +1,3 @@
-import json
-
 import requests
 
 from flask import Flask, request
@@ -74,6 +72,16 @@ def lessons_route():
     r = get_raw_json()
     r = parse_lessons(r)
     return r
+
+
+@app.route('/years')
+def get_years():
+    url = "https://logistica.univr.it/PortaleStudentiUnivr/combo.php?sw=ec_&aa=1&_=1631535880476"
+    r = requests.get(url).text
+    r = r.split(" = ")[1]
+    r = r[:-1]
+    years = {"years": eval(r)}
+    return years
 
 
 if __name__ == "__main__":
