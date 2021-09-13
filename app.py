@@ -80,8 +80,10 @@ def get_years():
     r = requests.get(url).text
     r = r.split(" = ")[1]
     r = r[:-1]
-    years = {"years": eval(r)}
-    return years
+    years = eval(r)
+    years = [[v["label"], k] for k, v in years.items()]
+    print(years)
+    return str(years)
 
 
 if __name__ == "__main__":
