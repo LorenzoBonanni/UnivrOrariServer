@@ -1,5 +1,6 @@
-import requests
+import json
 
+import requests
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -88,7 +89,7 @@ def get_years():
     r = r[:-1]
     years = eval(r)
     years = [[v["label"], k] for k, v in years.items()]
-    return str(years).replace("'", '"')
+    return json.dumps(years)
 
 
 @app.route('/courses')
@@ -101,13 +102,14 @@ def get_courses():
             e["label"],
             e["valore"],
             [
-                {'label': e2["label"],
-                 'valore': e2['valore']
+                {"label": e2["label"],
+                 "valore": e2['valore']
                  } for e2 in e["elenco_anni"]
             ]
         ] for e in result
     ]
-    return str(corsi)
+
+    return json.dumps(corsi)
 
 
 if __name__ == "__main__":
