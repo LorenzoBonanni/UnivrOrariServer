@@ -82,8 +82,7 @@ def get_years():
     r = r[:-1]
     years = eval(r)
     years = [[v["label"], k] for k, v in years.items()]
-    print(years)
-    return str(years)
+    return str(years).replace("'", '"')
 
 
 if __name__ == "__main__":
