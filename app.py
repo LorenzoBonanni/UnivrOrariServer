@@ -54,6 +54,7 @@ def get_courses_url():
     url = f"https://logistica.univr.it/PortaleStudentiUnivr/combo.php?sw=ec_&aa={anno}&page=corsi&_=1631551434382"
     return url
 
+
 def parse_lessons(r):
     out = {}
     legenda = r["legenda"]
@@ -88,7 +89,7 @@ def get_years():
     r = r.split(" = ")[1]
     r = r[:-1]
     years = eval(r)
-    years = [[v["label"], k] for k, v in years.items()]
+    years = [[v["label"].replace("\/", "/"), k] for k, v in years.items()]
     return json.dumps(years)
 
 
