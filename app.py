@@ -17,8 +17,8 @@ def main_roure():
 
 @app.route('/universities')
 def universities_route():
-    available = ["Università di Verona"]
-    return available
+    available = ["Universita di Verona"]
+    return json.dumps(available)
 
 
 @app.route('/subjects')
