@@ -2,6 +2,7 @@ import json
 
 import requests
 from flask import Flask
+from flask import request
 
 from utils import Utils
 
@@ -41,6 +42,24 @@ def get_courses():
     url = Utils.get_courses_url()
     result = requests.get(url).text
     courses = Utils.get_courses(result)
+    return json.dumps(courses)
+
+
+@app.route('/v2/courses')
+def get_courses_v2():
+    url = Utils.get_courses_url()
+    result = requests.get(url).text
+    courses = Utils.get_courses_v2(result)
+    return json.dumps(courses)
+
+
+@app.route('/year2')
+def get_year2():
+    url = Utils.get_courses_url()
+    course_id = request.args.get("corso")
+    result = requests.get(url).text
+    courses = Utils.get_years2(result, course_id)
+
     return json.dumps(courses)
 
 
