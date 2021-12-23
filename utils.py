@@ -109,9 +109,9 @@ class Utils:
         result = text.split("\n")[0].split(" = ")[1][:-1]
         result = eval(result)
         courses = {
-            e["valore"]: {
+            e["valore"]: [
                 [e2["label"], e2['valore']] for e2 in e["elenco_anni"]
-            }
+            ]
             for e in result
         }
 
