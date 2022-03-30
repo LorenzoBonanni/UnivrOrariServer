@@ -42,7 +42,9 @@ class Utils:
         data = request.args.get("date")
         # anno di studio (Esempio: 1 - UNICO)
         txtcurr = request.args.get("txtcurr")
-        return f"https://logistica.univr.it/PortaleStudentiUnivr/grid_call_new.php?view=easycourse&form-type=corso&include=corso&txtcurr=&anno={anno}&corso={corso}&anno2%5B%5D={anno2}&visualizzazione_orario=cal&date={data}&periodo_didattico=&_lang=it&list=0&week_grid_type=-1&ar_codes_=&ar_select_=&col_cells=0&empty_box=0&only_grid=0&highlighted_date=0&all_events=0&faculty_group=0&_lang=it&all_events=0&txtcurr={txtcurr}"
+
+        url = f"https://logistica.univr.it/PortaleStudentiUnivr/grid_call.php/?view=easycourse&form-type=corso&include=corso&txtcurr=&anno={anno}&corso={corso}&anno2[]={anno2}&visualizzazione_orario=cal&date={data}&periodo_didattico=&_lang=it&list=&week_grid_type=-1&ar_codes_=&ar_select_=&col_cells=0&empty_box=0&only_grid=0&highlighted_date=0&all_events=0&faculty_group=0&_lang=it&all_events=0&txtcurr={txtcurr}"
+        return url
 
     @staticmethod
     def get_courses_url():
@@ -65,7 +67,8 @@ class Utils:
         :return:
         """
         url = Utils.get_url()
-        response = requests.get(url).json()
+        print(url)
+        response = requests.post(url).json()
         print(type(response))
         return response
 
