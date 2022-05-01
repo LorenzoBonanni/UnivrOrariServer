@@ -14,10 +14,18 @@ class Utils:
 
         for lezione in r["celle"]:
             try:
+                # template_lezione = {
+                #     "nome_insegnamento": lezione["nome_insegnamento"],
+                #     "docente": lezione["docente"],
+                #     "aula": lezione["aula"],
+                #     "giorno": lezione["giorno"],
+                #     "ora_inizio": lezione["ora_inizio"],
+                #     "ora_fine": lezione["ora_fine"]
+                # }
                 template_lezione = {
-                    "nome_insegnamento": lezione["nome_insegnamento"],
-                    "docente": lezione["docente"],
-                    "aula": lezione["aula"],
+                    "nome_insegnamento": "Aggiornare l'app",
+                    "docente": "Aggiornare l'app",
+                    "aula": "Aggiornare l'app",
                     "giorno": lezione["giorno"],
                     "ora_inizio": lezione["ora_inizio"],
                     "ora_fine": lezione["ora_fine"]
